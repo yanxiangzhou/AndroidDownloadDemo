@@ -21,18 +21,14 @@ import okhttp3.ResponseBody;
  */
 public class DownloadUtil {
     private static final String TAG = DownloadUtil.class.getSimpleName();
-    private static DownloadUtil downloadUtil;
     private volatile static OkHttpClient okHttpClient;
 
+    private static final class DownloadUtilHolder {
+        static final DownloadUtil downloadUtil = new DownloadUtil();
+    }
+
     public static DownloadUtil get() {
-        if (downloadUtil == null) {
-            synchronized (DownloadUtil.class) {
-                if (downloadUtil == null) {
-                    downloadUtil = new DownloadUtil();
-                }
-            }
-        }
-        return downloadUtil;
+        return DownloadUtilHolder.downloadUtil;
     }
 
     public static OkHttpClient getOkHttpClient() {
@@ -63,7 +59,7 @@ public class DownloadUtil {
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 InputStream is = null;
                 byte[] buf = new byte[2048];
-                int len = 0;
+                int len;
                 FileOutputStream fos = null;
                 // 储存下载文件的目录
                 isExistDir(saveDir);
@@ -80,7 +76,7 @@ public class DownloadUtil {
                         sum += len;
                         int progress = (int) (sum * 1.0f / total * 100);
                         // 下载中
-                        listener.onDownloading(progress);
+                        listener.onDownloading(progress, total);
                     }
                     fos.flush();
                     // 下载完成
@@ -139,7 +135,7 @@ public class DownloadUtil {
          * @param progress
          * 下载进度
          */
-        void onDownloading(int progress);
+        void onDownloading(long progress, long totalSize);
 
         /**
          * 下载失败
