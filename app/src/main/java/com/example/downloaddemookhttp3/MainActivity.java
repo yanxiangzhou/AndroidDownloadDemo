@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 for (int i = 0 ; i < downloadInfoList.size(); i++) {
-                    String url = downloadInfoList.get(i).getUlr();
+                    String url = downloadInfoList.get(i).getUrl();
                     String fileName = downloadInfoList.get(i).getFileName();
                     String filePath = downloadInfoList.get(i).getFilePath();
                     DownloadUtil.download(url, filePath, fileName, new DownloadUtil.OnDownloadListener() {

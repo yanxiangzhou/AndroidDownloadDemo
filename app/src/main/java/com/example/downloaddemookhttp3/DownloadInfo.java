@@ -12,7 +12,7 @@ public class DownloadInfo {
         this.mUrl = builder.mUrl;
     }
 
-    public String getUlr() {
+    public String getUrl() {
         return mUrl;
     }
 

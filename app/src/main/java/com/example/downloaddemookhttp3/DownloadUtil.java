@@ -88,13 +88,11 @@ public class DownloadUtil {
                         if (is != null) {
                             is.close();
                         }
-                    } catch (IOException ignored) {
-                    }
-                    try {
                         if (fos != null) {
                             fos.close();
                         }
-                    } catch (IOException ignored) {
+                    } catch (IOException e) {
+                        listener.onDownloadFailed();
                     }
                 }
             }
